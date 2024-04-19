@@ -2,6 +2,7 @@ package notice
 
 import (
 	"github.com/PuerkitoBio/goquery"
+	"github.com/gin-gonic/gin"
 	"github.com/gocolly/colly"
 	log "github.com/sirupsen/logrus"
 	"strings"
@@ -22,7 +23,8 @@ type Notice struct {
 
 var queue = make(chan Notice, 10000)
 
-func GetColly() {
+// 根据页面地址保存内容
+func Colly(c *gin.Context) {
 	r, e := db.Query("SELECT url FROM t_pages")
 	if e != nil {
 		log.Error(e)

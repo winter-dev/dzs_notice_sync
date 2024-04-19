@@ -2,7 +2,7 @@ package notice
 
 import (
 	"database/sql"
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/mattn/go-sqlite3"
 	log "github.com/sirupsen/logrus"
 	"time"
 )
@@ -12,7 +12,7 @@ var db *sql.DB
 func InitDB() {
 	log.Info("init database start...")
 	var e error
-	db, e = sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/notice?charset=utf8&loc=Local")
+	db, e = sql.Open("sqlite3", "./notice.db?mode=memory")
 	if e != nil {
 		log.Error("open database error,", e)
 		panic(e)
@@ -28,7 +28,7 @@ func InitDB() {
 		panic(e)
 	}
 
-	r, e := db.Query("SELECT VERSION()")
+	r, e := db.Query("SELECT 1")
 	if e != nil {
 		panic(e)
 	}
@@ -39,7 +39,7 @@ func InitDB() {
 		if e != nil {
 			panic(e)
 		}
-		log.Info("current Mysql version:", version)
+		log.Info("current db version:", version)
 	}
 
 	log.Info("connect database success!")

@@ -1,6 +1,7 @@
 package notice
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/gocolly/colly"
 )
 
@@ -13,7 +14,8 @@ type Pages struct {
 var basicUrl string = "https://dzs.qq.com"
 var firstPage string = "https://dzs.qq.com/webplat/info/news_version3/394/3871/3872/3874/m2934/list_1.shtml"
 
-func Crawling() {
+// 获取页面地址
+func Crawling(c *gin.Context) {
 	var sli []Pages
 	var finished bool = false
 	var idx int64 = 2

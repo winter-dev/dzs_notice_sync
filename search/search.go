@@ -44,7 +44,8 @@ func CloseES() {
 	}
 }
 
-func Import2ES() {
+// 导入数据到es
+func Import2ES(c *gin.Context) {
 	ns, e := notice.GetNotice()
 	if e != nil {
 		log.Error(e)
@@ -71,9 +72,11 @@ func Search(c *gin.Context) {
 	//query = query.Must(elastic.NewMatchQuery("title", kw))
 
 	resp, e := client.Search().Index("dzs_notice").Type("_doc").Query(query).
-		Sort("id", true).From(0).Size(10).Do(context.Background())
+		Sort("id", true).From(0).Size(100).Do(context.Background())
 	if e != nil {
 		log.Error("search occured an error,", e)
+		c.JSON(200, e.Error())
+		return
 	}
 
 	var docs []Notice
